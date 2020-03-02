@@ -188,7 +188,7 @@ function formatResponse(resultText) {
 
 
 
-    function cleanAndSortArr(foodName, foodArr, price) {               
+    function cleanAndSortArr(foodName, foodArr, price) {                       
         const kcalElements = foodArr.filter(el => el.includes('kcal'));
         const kcalElementsIndex = [0];
 
@@ -213,8 +213,8 @@ function formatResponse(resultText) {
             // if name has two lines 
             let nameHasTwoLines = false;
 
-            if (!foodByDayEl[1].includes('|')) {
-                nameHasTwoLines = true;
+            if (!foodByDayEl[1].includes('|') && !foodByDayEl[2].includes('kcal')) { // if second line does not include a separator
+                nameHasTwoLines = true;                                              // and third line does not contain kcal -> name with two lines
             }
 
             if(foodName==='wok') {  // wok starts with origin country declaration
