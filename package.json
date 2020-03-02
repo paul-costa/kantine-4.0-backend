@@ -1,6 +1,9 @@
 {
   "name": "kantine-4.0-backend",
   "version": "0.0.1",
+  "engines": {
+    "node": "13.7.0"
+  },
   "author": "Paul Costa",
   "homepage": "https://paulcosta.at",
   "scripts": {
