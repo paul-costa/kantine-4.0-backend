@@ -65,13 +65,15 @@ function formatResponse(resultText) {
 
     let resultArr = resultText.split('\n');
     resultArr.forEach((el, i) => { resultArr[i]=el.trim(); });
-    const spliceNumbers = [5,1,6,3,2,2,2,0];    // how many elements have to be splice between each dish-group in array
+    const spliceNumbers = [5,1,5,3,2,2,2,0];    // how many elements have to be splice between each dish-group in array
 
 
     const foodArr = findFoodArr(resultArr, spliceNumbers, []);
 
     resultObj.clearSoup = cleanAndSortArr('clearSoup', foodArr.foodArrays[0], 1.8);
     resultObj.cremeSoup = cleanAndSortArr('cremeSoup', foodArr.foodArrays[1], 1.8);
+    
+    
     resultObj.dayPizza = cleanAndSortArr('dayPizza', foodArr.foodArrays[2], 7.9);
     resultObj.menu1 = cleanAndSortArr('menu1', foodArr.foodArrays[3], 6.5);
     resultObj.menu2 = cleanAndSortArr('menu2', foodArr.foodArrays[4], 6.5);
@@ -100,7 +102,6 @@ function formatResponse(resultText) {
     function findFoodArr(resultArr, spliceNumbers, foodArrays) {
         const arrLength = foodArrays.length;
         const initialArrSplice = spliceNumbers[arrLength];
-
 
         // splice off headers (type of dish etc.)
         resultArr.splice(0,initialArrSplice);
@@ -152,11 +153,9 @@ function formatResponse(resultText) {
             const allergens = weekpizzaArr[weekpizzaArr.length-1].trim();
             const ingredients = [];
 
-
             for(ingEl of weekpizzaArr.slice(1, weekpizzaArr.length-2)) {
                 ingredients.push(ingEl.trim());
             }
-
 
             return {
                 id: 'weekPizza-99',
@@ -189,7 +188,7 @@ function formatResponse(resultText) {
 
 
 
-    function cleanAndSortArr(foodName, foodArr, price) {        
+    function cleanAndSortArr(foodName, foodArr, price) {               
         const kcalElements = foodArr.filter(el => el.includes('kcal'));
         const kcalElementsIndex = [0];
 
@@ -211,12 +210,32 @@ function formatResponse(resultText) {
         let day = 0;
 
         for(foodByDayEl of foodByDay) {
-            const name = foodByDayEl[0].trim();
-            let ingredients = '';
-            let kcal = '';
-            let allergens = '';
+            // if name has two lines 
+            let nameHasTwoLines = false;
 
-            for(let i=1; i<foodByDayEl.length-1; i++) {
+            if (!foodByDayEl[1].includes('|')) {
+                nameHasTwoLines = true;
+            }
+
+            if(foodName==='wok') {  // wok starts with origin country declaration
+                let originCountry = foodByDayEl[0].split(' ');
+                originCountry.shift();
+                originCountry = foodByDayEl[0].split(' ')[0]+originCountry.join('').toLowerCase();
+                foodByDayEl[0] = originCountry + ' -';
+            }
+            
+            let name = '';
+            nameHasTwoLines ? name = foodByDayEl[0].trim() + ' ' + foodByDayEl[1].trim() : name = foodByDayEl[0].trim();
+
+
+
+
+            let ingredients = '';
+            let ingredientsStartIndex = 0;
+
+            nameHasTwoLines ? ingredientsStartIndex = 2 : ingredientsStartIndex = 1;
+
+            for(let i=ingredientsStartIndex; i<foodByDayEl.length-1; i++) {
                 ingredients += foodByDayEl[i].trim();
             }
 
@@ -228,6 +247,13 @@ function formatResponse(resultText) {
             });
 
             const additionalData = foodByDayEl[foodByDayEl.length-1].split("|");
+
+
+
+
+            let kcal = '';
+            let allergens = '';
+
 
             kcal = +additionalData[0].replace(/\D/g,'');
 
