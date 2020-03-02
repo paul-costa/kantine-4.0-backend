@@ -19,13 +19,13 @@ app.use((req,res, next) => {
     next();
 });
 
-app.use('/', express.static(path.join(__dirname, 'angular')));
+// app.use('/', express.static(path.join(__dirname, 'angular')));
 
 app.use('/api/parsepdf', routerParsePdf)
 
-app.use((req, res, next) => {
-    res.sendFile(path.join(__dirname, '../src','index.html'));
-});
+// app.use((req, res, next) => {
+//     res.sendFile(path.join(__dirname, '../src','index.html'));
+// });
 
 
 module.exports = app;

@@ -1,6 +1,7 @@
 {
   "name": "kantine-4.0-backend",
   "version": "0.0.1",
+  "main": "server.js",
   "engines": {
     "node": "13.7.0"
   },
