@@ -212,9 +212,12 @@ function formatResponse(resultText) {
         for(foodByDayEl of foodByDay) {
             // if name has two lines 
             let nameHasTwoLines = false;
+            console.log(foodByDayEl); 
 
-            if (!foodByDayEl[1].includes('|') && !foodByDayEl[2].includes('kcal')) { // if second line does not include a separator
-                nameHasTwoLines = true;                                              // and third line does not contain kcal -> name with two lines
+            if(foodByDayEl.length>2) {
+                if (!foodByDayEl[1].includes('|') && !foodByDayEl[2].includes('kcal')) { // if second line does not include a separator
+                    nameHasTwoLines = true;                                              // and third line does not contain kcal -> name with two lines
+                }
             }
 
             if(foodName==='wok') {  // wok starts with origin country declaration
