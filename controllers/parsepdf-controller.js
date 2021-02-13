@@ -4,8 +4,11 @@ const fs = require('fs');
 const pdf = require('pdf-parse');
 const request = require('request');
 
-function getTextData() {
+const crypto = require('crypto');
 
+
+
+function getTextData() {
     const today = new Date().getTime();
     const firstOfYear = new Date(new Date().getFullYear(),0,1,1).getTime();
     const currentKW = Math.floor((today - firstOfYear)/1000/60/60/24/7+1);
@@ -30,11 +33,59 @@ function getTextData() {
                 }
             );
         });
+
+        // request('https://downloads.paulcosta.at/wochenplan_kantine4.0.pdf')
+        // .pipe(crypto.createHash('md5'))
+        // .on('readable', function ()  {
+        //     let existingFileHash;
+        //     let requestedFileHash;
+            
+        //     requestedFileHash = getHashFromFile(this.read());
+
+        //     // check if file exists
+        //     if (fs.existsSync(pdfTitle)) {
+        //         existingFileHash = getHashFromFile(fs.readFileSync(pdfTitle));
+
+        //         const input = fs.createReadStream(pdfTitle)
+        //         .on('readable', () => {
+        //             const data = input.read();
+        //             const hash = crypto.createHash('sha256');
+
+        //             if (data) hash.update(data);
+        //             existingFileHash = hash.digest('hex')
+        //         })
+        //     }
+
+        //     // check if file changed
+        //     if (existingFileHash === requestedFileHash) {
+        //         pdf(fs.readFileSync(pdfTitle))
+        //         .then((data) => {
+        //             console.log('>> file exists')
+        //             resolve(data.text); 
+        //         }, err => { console.log(err) })
+        //     }
+        // })
+        // .pipe(fs.createWriteStream(pdfTitle))
+        // .on('finish', () => {
+        //     pdf(fs.readFileSync(pdfTitle))
+        //         .then((data) => {
+        //             resolve(data.text); 
+        //         }, err => {
+        //             console.log(err);
+        //         }
+        //     );
+        // });
     });
 }
     
 async function asyncCallGetTextData() {
     return await getTextData();
+}
+
+
+// compares downloaded pdf hash to hash of existing pdf (if previously downlaoded)
+function getHashFromFile(filename) {
+    return crypto.createHash('md5');
 }
 
 
