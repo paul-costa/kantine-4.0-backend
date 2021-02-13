@@ -17,7 +17,9 @@ function getTextData() {
     }
 
     return new Promise(resolve => {
-        request('https://www.m-eventcatering.at/m-lunchsolutions/wochenplan/wochenplan.pdf')
+        // https://www.m-eventcatering.at/m-lunchsolutions/wochenplan/wochenplan.pdf
+
+        request('http://downloads.paulcosta.at/wochenplan_kantine4.0.pdf')
         .pipe(fs.createWriteStream(pdfTitle))
         .on('finish', () => {
             pdf(fs.readFileSync(pdfTitle))
@@ -212,7 +214,6 @@ function formatResponse(resultText) {
         for(foodByDayEl of foodByDay) {
             // if name has two lines 
             let nameHasTwoLines = false;
-            console.log(foodByDayEl); 
 
             if(foodByDayEl.length>2) {
                 if (!foodByDayEl[1].includes('|') && !foodByDayEl[2].includes('kcal')) { // if second line does not include a separator
